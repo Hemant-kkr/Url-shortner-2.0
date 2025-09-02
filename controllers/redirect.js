@@ -11,7 +11,7 @@ const CLICKS = require('../models/clicks')
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const geo = geoip.lookup(ip);
     if (!geo) {
-        console.log(`Hello from ${geo.city}, ${geo.region}, ${geo.country}!`)
+        console.log(geo)
     }
     let shortid = req.params.Shortid;
     const url = await URL.findOne({ shortId: shortid });
