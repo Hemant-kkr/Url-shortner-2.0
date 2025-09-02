@@ -5,7 +5,7 @@ const MongoStore = require("connect-mongo");
 
 const path = require('path')
 const cors = require('cors');
-const PORT = 5005;
+// const PORT = 5005;
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
@@ -54,7 +54,7 @@ app.use('/auth',authRoutes);//handling the incoming  authentication requests
 app.use('/rq',redirectRoute)
 
 
-
-app.listen(PORT, () => {
-    console.log(`Server is started at localhost http://localhost:${PORT}`);
-})
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
