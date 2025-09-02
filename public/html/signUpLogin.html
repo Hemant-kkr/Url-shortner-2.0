@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Elegant Login & Signup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { width: 25px; height: 25px; top: 10%; left: 15%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 35px; height: 35px; top: 70%; left: 25%; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 18px; height: 18px; top: 30%; left: 75%; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 28px; height: 28px; top: 85%; left: 85%; animation-delay: 1s; }
+        .particle:nth-child(5) { width: 22px; height: 22px; top: 40%; left: 90%; animation-delay: 3s; }
+        .particle:nth-child(6) { width: 30px; height: 30px; top: 20%; left: 5%; animation-delay: 5s; }
+        .particle:nth-child(7) { width: 16px; height: 16px; top: 60%; left: 65%; animation-delay: 6s; }
+        .particle:nth-child(8) { width: 24px; height: 24px; top: 90%; left: 15%; animation-delay: 7s; }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg) scale(1);
+                opacity: 0.6;
+            }
+            33% {
+                transform: translateY(-30px) rotate(120deg) scale(1.1);
+                opacity: 1;
+            }
+            66% {
+                transform: translateY(20px) rotate(240deg) scale(0.9);
+                opacity: 0.8;
+            }
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% 100%;
+            animation: gradient-shift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .form-container:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 35px 70px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo img {
+            width: 90px;
+            height: 90px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 3px solid rgba(102, 126, 234, 0.2);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            color: #333;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 
+                0 0 0 3px rgba(102, 126, 234, 0.1),
+                0 8px 25px rgba(102, 126, 234, 0.15);
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .form-group input::placeholder {
+            color: #aaa;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus::placeholder {
+            color: transparent;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 15px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 35px rgba(102, 126, 234, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 15px;
+            color: #666;
+        }
+
+        .switch-form a {
+            color: #667eea;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 2px 4px;
+        }
+
+        .switch-form a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .switch-form a:hover {
+            color: #764ba2;
+            transform: translateY(-1px);
+        }
+
+        .switch-form a:hover::after {
+            width: 100%;
+        }
+
+        .form {
+            display: none;
+            animation: slideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .form.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            padding: 5px 10px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #e74c3c;
+        }
+
+        .success-message {
+            color: #27ae60;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            padding: 5px 10px;
+            background: rgba(39, 174, 96, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #27ae60;
+        }
+
+        /* Loading animation for button */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Form switching animation */
+        .form-container.switching {
+            transform: scale(0.95);
+        }
+
+        /* Enhanced input validation states */
+        .form-group input.valid {
+            border-color: #27ae60;
+            background: rgba(39, 174, 96, 0.05);
+        }
+
+        .form-group input.invalid {
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.05);
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Enhanced mobile responsiveness */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 40px 25px;
+                margin: 10px;
+                border-radius: 20px;
+            }
+
+            .logo h1 {
+                font-size: 26px;
+            }
+
+            .logo img {
+                width: 70px;
+                height: 70px;
+            }
+
+            .btn {
+                padding: 16px;
+                font-size: 16px;
+            }
+
+            .form-group input {
+                padding: 16px 18px;
+            }
+        }
+
+        /* Custom SweetAlert2 styling */
+        .swal2-popup {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(20px) !important;
+            border-radius: 20px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background particles -->
+    <div class="bg-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <div class="form-container">
+            <div class="logo">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/18973f35-1141-4e23-8275-714f0de39591.png"
+                    alt="Modern geometric abstract logo with glowing blue accents and clean lines representing digital security" />
+                <h1>NEXUS AUTH</h1>
+            </div>
+
+            <div id="loginForm" class="form active">
+                <div class="form-group">
+                    <label for="loginEmail">📧 Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email address" required>
+                    <div class="error-message" id="loginEmailError">Please enter a valid email address</div>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">🔒 Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    <div class="error-message" id="loginPasswordError">Password is required</div>
+                </div>
+                <button class="btn" onclick="validateLogin()">
+                    <span class="btn-text">🚀 Sign In</span>
+                </button>
+                <div class="switch-form">
+                    Don't have an account? <a onclick="showSignup()">Create one now</a>
+                </div>
+            </div>
+
+            <div id="signupForm" class="form">
+                <div class="form-group">
+                    <label for="signupUsername">👤 Username</label>
+                    <input type="text" id="signupUsername" placeholder="Choose a unique username" required>
+                    <div class="error-message" id="signupUsernameError">Username must be at least 3 characters</div>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">📧 Email Address</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email address" required>
+                    <div class="error-message" id="signupEmailError">Please enter a valid email address</div>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">🔒 Password</label>
+                    <input type="password" id="signupPassword" placeholder="Create a strong password" required>
+                    <div class="error-message" id="signupPasswordError">Password must be at least 8 characters</div>
+                </div>
+                <button class="btn" onclick="validateSignup()">
+                    <span class="btn-text">✨ Create Account</span>
+                </button>
+                <div class="switch-form">
+                    Already have an account? <a onclick="showLogin()">Sign in here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced SweetAlert function with better styling
+        function showAlert(type, message) {
+            Swal.fire({
+                icon: type,
+                title: type === 'success' ? '🎉 Success!' : '❌ Oops!',
+                text: message,
+                background: 'rgba(255, 255, 255, 0.95)',
+                color: '#333',
+                confirmButtonColor: type === 'success' ? '#27ae60' : '#e74c3c',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end',
+                customClass: {
+                    popup: 'swal2-custom-popup'
+                }
+            });
+        }
+
+        // Enhanced form switching with animation
+        function showSignup() {
+            const container = document.querySelector('.form-container');
+            container.classList.add('switching');
+            
+            setTimeout(() => {
+                document.getElementById('loginForm').classList.remove('active');
+                document.getElementById('signupForm').classList.add('active');
+                container.classList.remove('switching');
+            }, 150);
+        }
+
+        function showLogin() {
+            const container = document.querySelector('.form-container');
+            container.classList.add('switching');
+            
+            setTimeout(() => {
+                document.getElementById('signupForm').classList.remove('active');
+                document.getElementById('loginForm').classList.add('active');
+                container.classList.remove('switching');
+            }, 150);
+        }
+
+        // Enhanced input validation with visual feedback
+        function validateInput(input, isValid) {
+            input.classList.remove('valid', 'invalid');
+            if (isValid) {
+                input.classList.add('valid');
+            } else {
+                input.classList.add('invalid');
+            }
+        }
+
+        // Enhanced login validation
+        function validateLogin() {
+            const email = document.getElementById('loginEmail');
+            const password = document.getElementById('loginPassword');
+            let isValid = true;
+
+            // Reset errors and visual states
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+
+            // Email validation
+            const emailValid = email.value && email.value.includes('@') && email.value.includes('.');
+            validateInput(email, emailValid);
+            if (!emailValid) {
+                document.getElementById('loginEmailError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Password validation
+            const passwordValid = password.value && password.value.length > 0;
+            validateInput(password, passwordValid);
+            if (!passwordValid) {
+                document.getElementById('loginPasswordError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                const btn = document.querySelector('#loginForm .btn');
+                const btnText = btn.querySelector('.btn-text');
+                btnText.innerHTML = '<span class="loading"></span>Signing in...';
+                btn.disabled = true;
+
+                fetch("http://localhost:5005/auth/login", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email.value,
+                        password: password.value
+                    })
+                })
+                .then(res => res.json())
+                .then((data) => {
+                    console.log(data);
+                    if (data.status == 'sucess') {
+                        showAlert('success', 'Welcome back! Redirecting...');
+                        setTimeout(() => {
+                            window.location.href = "/";
+                        }, 1500);
+                    } else {
+                        showAlert('error', data.status || 'Login failed. Please try again.');
+                        btnText.innerHTML = '🚀 Sign In';
+                        btn.disabled = false;
+                    }
+                })
+                .catch((err) => {
+                    console.error(err);
+                    showAlert('error', 'Network error. Please check your connection.');
+                    btnText.innerHTML = '🚀 Sign In';
+                    btn.disabled = false;
+                });
+            }
+        }
+
+        // Enhanced signup validation
+        function validateSignup() {
+            const username = document.getElementById('signupUsername');
+            const email = document.getElementById('signupEmail');
+            const password = document.getElementById('signupPassword');
+            let isValid = true;
+
+            // Reset errors and visual states
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+
+            // Username validation
+            const usernameValid = username.value && username.value.length >= 3;
+            validateInput(username, usernameValid);
+            if (!usernameValid) {
+                document.getElementById('signupUsernameError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Email validation
+            const emailValid = email.value && email.value.includes('@') && email.value.includes('.');
+            validateInput(email, emailValid);
+            if (!emailValid) {
+                document.getElementById('signupEmailError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Password validation
+            const passwordValid = password.value && password.value.length >= 8;
+            validateInput(password, passwordValid);
+            if (!passwordValid) {
+                document.getElementById('signupPasswordError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                const btn = document.querySelector('#signupForm .btn');
+                const btnText = btn.querySelector('.btn-text');
+                btnText.innerHTML = '<span class="loading"></span>Creating account...';
+                btn.disabled = true;
+
+                fetch("http://localhost:5005/auth/register", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username.value,
+                        email: email.value,
+                        password: password.value,
+                    })
+                })
+                .then(res => res.json())
+                .then((data) => {
+                    if (data.signUP == 'sucess') {
+                        showAlert('success', 'Account created successfully! Please sign in.');
+                        setTimeout(() => {
+                            btnText.innerHTML = '✨ Create Account';
+                            btn.disabled = false;
+                            username.value = '';
+                            email.value = '';
+                            password.value = '';
+                            showLogin();
+                        }, 1500);
+                    } else {
+                        showAlert('error', data.signUP || 'Registration failed. Please try again.');
+                        btnText.innerHTML = '✨ Create Account';
+                        btn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error:', error);
+                    showAlert('error', 'Network error. Please check your connection.');
+                    btnText.innerHTML = '✨ Create Account';
+                    btn.disabled = false;
+                });
+            }
+        }
+
+        // Initialize enhanced interactions
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add real-time input validation
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', function () {
+                    const errorId = this.id + 'Error';
+                    const errorElement = document.getElementById(errorId);
+                    if (errorElement) {
+                        errorElement.style.display = 'none';
+                        this.classList.remove('invalid', 'valid');
+                    }
+                });
+
+                // Add focus and blur effects
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                });
+
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Enhanced Enter key support
+            document.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    if (document.getElementById('loginForm').classList.contains('active')) {
+                        validateLogin();
+                    } else {
+                        validateSignup();
+                    }
+                }
+            });
+
+            // Add particle mouse interaction
+            document.addEventListener('mousemove', (e) => {
+                const particles = document.querySelectorAll('.particle');
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+
+                particles.forEach((particle, index) => {
+                    const rect = particle.getBoundingClientRect();
+                    const particleX = rect.left + rect.width / 2;
+                    const particleY = rect.top + rect.height / 2;
+                    
+                    const deltaX = mouseX - particleX;
+                    const deltaY = mouseY - particleY;
+                    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                    
+                    if (distance < 150) {
+                        const force = (150 - distance) / 150;
+                        const moveX = deltaX * force * 0.05;
+                        const moveY = deltaY * force * 0.05;
+                        particle.style.transform = `translate(${moveX}px, ${moveY}px) scale(${1 + force * 0.1})`;
+                        particle.style.opacity = 0.8 + force * 0.2;
+                    } else {
+                        particle.style.transform = '';
+                        particle.style.opacity = '';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
