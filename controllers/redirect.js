@@ -8,11 +8,10 @@ const CLICKS = require('../models/clicks')
     const parser = new UAParser();
     parser.setUA(userAgent);
     let result = parser.getResult();
-    console.log(userAgent,result)
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const geo = geoip.lookup(ip);
     if (!geo) {
-        // console.log(`Hello from ${geo.city}, ${geo.region}, ${geo.country}!`)
+        console.log(`Hello from ${geo.city}, ${geo.region}, ${geo.country}!`)
     }
     let shortid = req.params.Shortid;
     const url = await URL.findOne({ shortId: shortid });
@@ -22,7 +21,7 @@ const CLICKS = require('../models/clicks')
          {
           await CLICKS.create({
             url:url._id,
-            country:geo.country,
+            country:"India",
             Browser:"mobile"
           })
          }
