@@ -99,7 +99,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Shortener with Analytics</title>
+    <title>URL Shortener - Transform Your Links</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -108,119 +108,226 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #ec4899;
+            --dark: #0f172a;
+            --light: #f1f5f9;
+            --text: #64748b;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            position: relative;
             overflow-x: hidden;
         }
 
-        /* Animated background particles */
-        .bg-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
             width: 100%;
             height: 100%;
+            top: 0;
+            left: 0;
             z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .particle:nth-child(1) { width: 20px; height: 20px; top: 20%; left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 30px; height: 30px; top: 60%; left: 20%; animation-delay: 2s; }
-        .particle:nth-child(3) { width: 15px; height: 15px; top: 40%; left: 70%; animation-delay: 4s; }
-        .particle:nth-child(4) { width: 25px; height: 25px; top: 80%; left: 80%; animation-delay: 1s; }
-        .particle:nth-child(5) { width: 18px; height: 18px; top: 30%; left: 90%; animation-delay: 3s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        /* Header Navigation */
-        header {
-            padding: 20px;
-            position: relative;
-            z-index: 100;
-        }
-
-        nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .nav-button {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            color: white;
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
             overflow: hidden;
         }
 
-        .nav-button::before {
+        .bg-animation::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: drift 20s linear infinite;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        .floating-shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape2 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(45deg, #54a0ff, #48dbfb);
+            border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+
+        .shape3 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #ff9ff3, #feca57);
+            border-radius: 50%;
+            top: 50%;
+            left: 70%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(30px, -30px) rotate(90deg);
+            }
+
+            50% {
+                transform: translate(-20px, 20px) rotate(180deg);
+            }
+
+            75% {
+                transform: translate(-30px, -20px) rotate(270deg);
+            }
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .nav-button:hover::before {
-            left: 100%;
-        }
-
-        .nav-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .nav-button.active {
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Main Container */
-        .main-container {
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            min-height: calc(100vh - 120px);
-            padding: 20px;
         }
 
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 3rem 1rem;
+            animation: fadeInUp 1s ease-out;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: glowText 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowText {
+            from {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+
+            to {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2), 0 0 30px rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+        }
+
+        /* URL Shortener Card */
         .shortener-card {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 40px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            max-width: 600px;
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
             width: 100%;
-            text-align: center;
+            margin: 0 auto;
+            animation: slideUp 0.8s ease-out;
             position: relative;
             overflow: hidden;
         }
@@ -233,50 +340,40 @@
             right: 0;
             height: 4px;
             background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
-            animation: gradient-shift 3s ease-in-out infinite;
+            background-size: 200% 100%;
+            animation: gradient-shift 3s linear infinite;
         }
 
         @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            0% {
+                background-position: 0% 0%;
+            }
+
+            100% {
+                background-position: 200% 0%;
+            }
         }
 
-        .title {
-            font-size: 2.8em;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #666;
-            font-size: 1.1em;
-            margin-bottom: 40px;
-            opacity: 0.8;
-        }
-
-        .input-group {
+        /* Input Section */
+        .input-wrapper {
             position: relative;
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
         }
 
         .url-input {
             width: 100%;
-            padding: 18px 20px;
-            font-size: 16px;
+            padding: 1.25rem;
+            font-size: 1.1rem;
             border: 2px solid #e1e5e9;
             border-radius: 15px;
-            background: rgba(255, 255, 255, 0.8);
+            background: white;
             transition: all 0.3s ease;
             outline: none;
         }
 
         .url-input:focus {
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
             transform: translateY(-2px);
         }
 
@@ -284,10 +381,20 @@
             color: #a0a9b8;
         }
 
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        /* Shorten Button */
         .shorten-btn {
             width: 100%;
-            padding: 18px;
-            font-size: 18px;
+            padding: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: white;
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -302,21 +409,24 @@
         .shorten-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
 
         .shorten-btn:hover::before {
-            left: 100%;
+            width: 600px;
+            height: 600px;
         }
 
         .shorten-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
         }
 
         .shorten-btn:active {
@@ -326,60 +436,73 @@
         .shorten-btn:disabled {
             opacity: 0.7;
             cursor: not-allowed;
-            transform: none;
         }
 
-        .loading {
-            display: inline-block;
+        .btn-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
             width: 20px;
             height: 20px;
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-top: 2px solid white;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-right: 10px;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
+        /* Result Container */
         .result-container {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(102, 126, 234, 0.1);
+            margin-top: 2rem;
+            padding: 1.5rem;
             border-radius: 15px;
-            border-left: 4px solid #667eea;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
+            display: none;
         }
 
         .result-container.show {
             opacity: 1;
             transform: translateY(0);
-        }
-
-        .result-container.error {
-            background: rgba(244, 67, 54, 0.1);
-            border-left-color: #f44336;
+            display: block;
         }
 
         .result-container.success {
-            background: rgba(76, 175, 80, 0.1);
-            border-left-color: #4caf50;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 2px solid rgba(16, 185, 129, 0.3);
         }
 
-        .shortened-url {
+        .result-container.error {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .shortened-url-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 1rem;
         }
 
         .url-link {
@@ -388,7 +511,7 @@
             font-weight: 500;
             word-break: break-all;
             flex-grow: 1;
-            margin-right: 15px;
+            margin-right: 1rem;
         }
 
         .url-link:hover {
@@ -396,185 +519,466 @@
         }
 
         .copy-btn {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .copy-btn:hover {
-            background: #5a6fd8;
             transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
         .copy-btn.copied {
-            background: #4caf50;
+            background: linear-gradient(135deg, #10b981, #059669);
         }
 
-        /* Features section */
-        .features {
+        /* Features Grid */
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
         }
 
-        .feature {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
+        .feature-card {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            padding: 1.5rem;
             border-radius: 15px;
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        .feature:hover {
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+            animation: shimmer 0.5s;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        .feature-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .feature-icon {
-            font-size: 2em;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        .feature-card:nth-child(1) .feature-icon {
+            animation-delay: 0s;
+        }
+
+        .feature-card:nth-child(2) .feature-icon {
+            animation-delay: 0.2s;
+        }
+
+        .feature-card:nth-child(3) .feature-icon {
+            animation-delay: 0.4s;
+        }
+
+        .feature-card:nth-child(4) .feature-icon {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .feature-title {
             font-weight: 600;
-            margin-bottom: 5px;
-            color: #333;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
         }
 
         .feature-description {
-            font-size: 0.9em;
-            color: #666;
+            font-size: 0.9rem;
+            color: var(--text);
         }
 
-        /* Responsive Design */
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, rgba(255, 255, 255, 0.8));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 4rem;
+            box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #e1e5e9;
+            color: var(--text);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
             .shortener-card {
-                padding: 30px 20px;
-                margin: 20px;
+                padding: 2rem 1.5rem;
             }
 
-            .title {
-                font-size: 2.2em;
+            .hero-title {
+                font-size: 2rem;
             }
 
-            nav {
-                justify-content: center;
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .nav-button {
-                padding: 10px 20px;
-                font-size: 14px;
-            }
-
-            .shortened-url {
+            .shortened-url-box {
                 flex-direction: column;
-                align-items: stretch;
+                gap: 1rem;
             }
 
             .url-link {
                 margin-right: 0;
-                margin-bottom: 10px;
                 text-align: center;
+            }
+
+            .copy-btn {
+                width: 100%;
+            }
+        }
+
+        /* Mobile Menu Button (hidden by default) */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Background particles -->
-    <div class="bg-particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="floating-shape shape1"></div>
+        <div class="floating-shape shape2"></div>
+        <div class="floating-shape shape3"></div>
     </div>
 
-    <!-- Header Navigation -->
-    <header>
-        <nav>
-            <a href="/" class="nav-button active">🏠 Home</a>
-            <a href="/DashBoard" class="nav-button">📊 Dashboard</a>
-            <a href="/login" class="nav-button">🔐 Login</a>
-            <a href="/about" class="nav-button">ℹ️ About Us</a>
-        </nav>
-    </header>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🔗 ShortLink Pro</div>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/analytics">Analytics</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+            <button class="mobile-menu-btn">☰</button>
+        </div>
+    </nav>
 
     <!-- Main Content -->
-    <div class="main-container">
-        <div class="shortener-card">
-            <h1 class="title">🚀 URL Shortener</h1>
-            <p class="subtitle">Transform your long URLs into short, shareable links with detailed analytics</p>
-            
-            <div class="input-group">
-                <input 
-                    id="urlInput" 
-                    type="text" 
-                    placeholder="Enter your long URL here (e.g., https://example.com/very/long/url)" 
-                    class="url-input"
-                />
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">🚀 Transform Your Links</h1>
+            <p class="hero-subtitle">Create short, powerful URLs with real-time analytics and insights</p>
+        </section>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-number">10M+</div>
+                <div class="stat-label">Links Shortened</div>
             </div>
-            
+            <div class="stat-card">
+                <div class="stat-number">500K+</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">99.9%</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">150+</div>
+                <div class="stat-label">Countries</div>
+            </div>
+        </div>
+
+        <!-- URL Shortener Card -->
+        <div class="shortener-card">
+            <div class="input-wrapper">
+                <input id="urlInput" type="text" class="url-input" placeholder="Paste your long URL here..." />
+                <span class="input-icon">🔗</span>
+            </div>
+
             <button id="shortenBtn" class="shorten-btn">
-                <span class="btn-text">✨ Shorten URL</span>
+                <span class="btn-content">
+                    <span class="btn-text">✨ Shorten URL</span>
+                </span>
             </button>
-            
+
             <div id="result" class="result-container"></div>
 
-            <!-- Features Section -->
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">📈</div>
+            <!-- Features Grid -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
                     <div class="feature-title">Analytics</div>
-                    <div class="feature-description">Track clicks and performance</div>
+                    <div class="feature-description">Track every click</div>
                 </div>
-                <div class="feature">
-                    <div class="feature-icon">🌍</div>
-                    <div class="feature-title">Global Reach</div>
-                    <div class="feature-description">Works worldwide instantly</div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Lightning Fast</div>
+                    <div class="feature-description">Instant redirects</div>
                 </div>
-                <div class="feature">
+                <div class="feature-card">
                     <div class="feature-icon">🔒</div>
                     <div class="feature-title">Secure</div>
-                    <div class="feature-description">Safe and reliable links</div>
+                    <div class="feature-description">SSL encrypted</div>
                 </div>
-                <div class="feature">
-                    <div class="feature-icon">⚡</div>
-                    <div class="feature-title">Fast</div>
-                    <div class="feature-description">Lightning-fast redirects</div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <div class="feature-title">Global CDN</div>
+                    <div class="feature-description">Worldwide access</div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Product</h3>
+                <ul>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">API</a></li>
+                    <li><a href="#">Enterprise</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Community</a></li>
+                    <li><a href="#">Status</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">GDPR</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 ShortLink Pro. All rights reserved. Made with ❤️ by InnovateCo</p>
+        </div>
+    </footer>
 
     <script>
+        // Smooth scroll for navigation
+        // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        //     anchor.addEventListener('click', function (e) {
+        //         e.preventDefault();
+        //         const target = document.querySelector(this.getAttribute('href'));
+        //         if (target) {
+        //             target.scrollIntoView({ behavior: 'smooth' });
+        //         }
+        //     });
+        // });
+
+        // URL Shortener functionality
         document.getElementById('shortenBtn').addEventListener('click', async () => {
             const urlInput = document.getElementById('urlInput');
             const shortenBtn = document.getElementById('shortenBtn');
             const resultDiv = document.getElementById('result');
-            const btnText = shortenBtn.querySelector('.btn-text');
+            const btnContent = shortenBtn.querySelector('.btn-content');
 
             const urlValue = urlInput.value.trim();
 
-            // Basic URL validation
+            // Validation
             if (!urlValue) {
-                showResult('Please enter a URL', 'error');
+                showResult('⚠️ Please enter a URL', 'error');
+                shakeInput();
                 return;
             }
 
             if (!isValidUrl(urlValue)) {
-                showResult('Please enter a valid URL (include http:// or https://)', 'error');
+                showResult('⚠️ Please enter a valid URL (include http:// or https://)', 'error');
+                shakeInput();
                 return;
             }
 
-            // Show loading state
+            // Loading state
             shortenBtn.disabled = true;
-            btnText.innerHTML = '<span class="loading"></span>Shortening...';
+            btnContent.innerHTML = '<div class="loading-spinner"></div><span>Shortening...</span>';
 
             try {
                 const response = await fetch('https://url-shortener-74fg.onrender.com/url', {
@@ -588,37 +992,36 @@
                 if (response.ok) {
                     const data = await response.json();
                     const shortUrl = `https://url-shortener-74fg.onrender.com/rq/${data.id}`;
-                    
+
                     showResult(`
                         <div style="text-align: left;">
-                            <h3 style="color: #4caf50; margin-bottom: 15px;">✅ URL Shortened Successfully!</h3>
-                            <div class="shortened-url">
+                            <h3 style="color: #10b981; margin-bottom: 1rem; font-size: 1.3rem;">
+                                ✅ Success! Your short URL is ready
+                            </h3>
+                            <div class="shortened-url-box">
                                 <a href="${shortUrl}" class="url-link" target="_blank">${shortUrl}</a>
-                                <button class="copy-btn" onclick="copyToClipboard('${shortUrl}', this)">Copy</button>
+                                <button class="copy-btn" onclick="copyToClipboard('${shortUrl}', this)">
+                                    📋 Copy
+                                </button>
                             </div>
-                            <p style="margin-top: 15px; font-size: 14px; color: #666;">
-                                🔗 Original URL: ${urlValue}<br>
-                                📊 Click to view analytics in your dashboard
+                            <p style="margin-top: 1rem; font-size: 0.9rem; color: #64748b;">
+                                Original: ${urlValue.substring(0, 50)}${urlValue.length > 50 ? '...' : ''}
                             </p>
                         </div>
                     `, 'success');
 
-                    // Clear the input
+                    // Clear input with animation
                     urlInput.value = '';
-                    
-                    // Optional: Fetch analytics if you have that function
-                    // fetchAnalytics(data.id);
                 } else {
                     const errorData = await response.json().catch(() => ({}));
-                    showResult(`❌ Error: ${errorData.message || 'Unable to shorten URL. Please try again.'}`, 'error');
+                    showResult(`❌ ${errorData.message || 'Unable to shorten URL. Please try again.'}`, 'error');
                 }
             } catch (error) {
                 console.error('Network error:', error);
-                showResult('🌐 Network error. Please check your connection and try again.', 'error');
+                showResult('🌐 Network error. Please check your connection.', 'error');
             } finally {
-                // Reset button state
                 shortenBtn.disabled = false;
-                btnText.innerHTML = '✨ Shorten URL';
+                btnContent.innerHTML = '<span class="btn-text">✨ Shorten URL</span>';
             }
         });
 
@@ -644,57 +1047,17 @@
             resultDiv.className = `result-container show ${type}`;
         }
 
-        function copyToClipboard(text, button) {
-            navigator.clipboard.writeText(text).then(() => {
-                const originalText = button.textContent;
-                button.textContent = 'Copied!';
-                button.classList.add('copied');
-                
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                button.textContent = 'Copied!';
-                setTimeout(() => {
-                    button.textContent = 'Copy';
-                }, 2000);
-            });
+        function shakeInput() {
+            const input = document.getElementById('urlInput');
+            input.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                input.style.animation = '';
+            }, 500);
         }
 
-        // Add some interactive effects
-        document.addEventListener('mousemove', (e) => {
-            const particles = document.querySelectorAll('.particle');
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-
-            particles.forEach((particle, index) => {
-                const rect = particle.getBoundingClientRect();
-                const particleX = rect.left + rect.width / 2;
-                const particleY = rect.top + rect.height / 2;
-                
-                const deltaX = mouseX - particleX;
-                const deltaY = mouseY - particleY;
-                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-                
-                if (distance < 100) {
-                    const force = (100 - distance) / 100;
-                    particle.style.transform = `translate(${deltaX * force * 0.1}px, ${deltaY * force * 0.1}px)`;
-                } else {
-                    particle.style.transform = '';
-                }
-            });
-        });
+        
     </script>
+
 </body>
 
 </html>
