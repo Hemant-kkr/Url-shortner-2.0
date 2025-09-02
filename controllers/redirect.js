@@ -22,8 +22,8 @@ const CLICKS = require('../models/clicks')
          {
           await CLICKS.create({
             url:url._id,
-            country:"India",
-            Browser:"devicce"
+            country:geo.country,
+            Browser:"mobile"
           })
          }
         res.redirect(url.redirectURL);

@@ -16,7 +16,6 @@ const userId    = req.session.userId;
 const userEmail = req.session.email; 
 const userrole  = req.session.role;
 const UserAllUrls = await URL.find({createdBy:userId});  
-console.log(UserAllUrls)   
     res.render('dashBoard',{UserAllUrls});
 }
 module.exports={homePage,loginPage,aboutPage,DashBoardPage}

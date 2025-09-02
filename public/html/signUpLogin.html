@@ -548,7 +548,7 @@
                 btnText.innerHTML = '<span class="loading"></span>Signing in...';
                 btn.disabled = true;
 
-                fetch("http://localhost:5005/auth/login", {
+                fetch("https://url-shortener-74fg.onrender.com/auth/login", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'
@@ -621,7 +621,7 @@
                 btnText.innerHTML = '<span class="loading"></span>Creating account...';
                 btn.disabled = true;
 
-                fetch("http://localhost:5005/auth/register", {
+                fetch("https://url-shortener-74fg.onrender.com/auth/register", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
