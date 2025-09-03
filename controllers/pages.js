@@ -4,7 +4,7 @@ const USER =require('../models/user');
 async function homePage(req,res) {
     const totalUrls = await URL.countDocuments({});
     const totalUsers = await USER.countDocuments({});
-    res.render("index.ejs",{loginStatus:req.session.isLogged,totalUrls,totalUsers})     
+    res.render("Index",{loginStatus:req.session.isLogged,totalUrls,totalUsers})     
 }
 async function loginPage(req,res) {
     res.render("signUpLogin.ejs",{loginStatus:req.session.isLogged})   
