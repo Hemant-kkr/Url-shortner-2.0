@@ -3,10 +3,11 @@ const URL = require('../models/url')
 
 async function generateShortURL(req, res) {
     const body = req.body;
+    console.log(body)
     let urlCreaterId = null;
     if (req.session.userId && req.session.email) {
         urlCreaterId = req.session.userId;
-        const existedUrl = await URL.findOne({redirectURL:body.url});
+        const existedUrl = await URL.findOne({redirectURL:body.url,createdBy:req.session.userId});
         if(existedUrl){
             return res.json({id:existedUrl.shortId})
         }

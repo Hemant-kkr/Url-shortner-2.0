@@ -23,6 +23,7 @@ async function login(req,res){
     req.session.userId = isUser._id;
     req.session.email= isUser.email;
     req.session.role=isUser.role;
+    req.session.isLogged=true;
     return res.json({status:'sucess'});
 }
 module.exports={

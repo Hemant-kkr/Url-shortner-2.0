@@ -18,10 +18,69 @@
             min-height: 100vh;
             padding: 20px;
         }
-        
+            /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            margin-left: 120px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
         .container {
             max-width: 1400px;
-            margin: 0 auto;
+            margin: 60px auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 30px;
@@ -172,13 +231,30 @@
     </style>
 </head>
 <body>
+      <nav>
+        <div class="nav-container">
+            <div class="logo">🔗 ShortLink Pro</div>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/#">Analytics</a></li>
+                <li><a href="/about">About</a></li>
+               <% if(!locals.loginStatus) {%>
+                    <li><a href="/login">Login</a></li>
+                    <%} else{ %>
+                        <li><a href="/logout">logout</a></li>
+                        <%}%>
+            </ul>
+            <!-- <button class="mobile-menu-btn">☰</button> -->
+        </div>
+    </nav>
     <div class="container">
         <h1>🚀 URL Analytics Dashboard</h1>
         
         <!-- Stats Overview -->
         <div class="stats-overview">
             <div class="stat-card">
-                <div class="stat-number" id="totalUrls">0</div>
+                <div class="stat-number" id="totalUrls"><%= UserAllUrls.length %></div>
                 <div class="stat-label">Total URLs</div>
             </div>
             <div class="stat-card">
@@ -338,7 +414,7 @@
         });
 
         // Update stats display
-        document.getElementById('totalUrls').textContent = analyticsData.urls.length;
+        // document.getElementById('totalUrls').textContent = analyticsData.urls.length;
         document.getElementById('totalClicks').textContent = totalClicks.toLocaleString();
         document.getElementById('totalCountries').textContent = allCountries.size - 1; // -1 for "Others"
         document.getElementById('totalDevices').textContent = allDevices.size;

@@ -6,11 +6,13 @@ const linkSchema = mongoose.Schema({
         ref:URL
     },
     country:String,
+    city:String,
+    Browser:String,
     device:String,
     
 },
 {
-    timestams:true
+    timestamps:true
 }
 )
 const CLICKS = new mongoose.model('click',linkSchema);

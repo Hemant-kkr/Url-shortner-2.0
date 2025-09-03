@@ -29,11 +29,7 @@ const redirectRoute= require('./routes/redirect')
 //middlewares
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors({
-    origin: 'http://127.0.0.1:5500/public/html/signUpLogin.html',
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type'] // 👈 This is the key fix
-}));
+
 
 
 // session setup
@@ -41,8 +37,10 @@ app.use(session({
     secret: process.env.SESSION_SECRET|| 'nothing ',
     resave:false,
     saveUninitialized:false,
-    store:MongoStore.create({mongoUrl: process.env.MONGO_URI}),
-    cookie: { maxAge: 1000 * 60 * 60 * 24 }
+    store:MongoStore.create({
+        mongoUrl: process.env.MONGO_URI
+    }),
+    cookie: { maxAge: 1000*60*60 }
 })
 );
 

@@ -1,10 +1,12 @@
 const express= require('express');
 const router = new  express.Router();
 const checkRole=require('../middleware/roleAuth')
-const {homePage,loginPage,aboutPage,DashBoardPage}= require('../controllers/pages');
+const isLogged =require('../middleware/isLogged')
+const {homePage,loginPage,aboutPage,DashBoardPage,analyticsPage}= require('../controllers/pages');
 router.get('/',homePage)
 // router.get('/home',homePage);
-router.get('/login',loginPage);
+router.get('/login',isLogged,loginPage);
 router.get('/About',aboutPage);
-router.get('/DashBoard',checkRole,DashBoardPage)
+router.get('/DashBoard',checkRole,DashBoardPage);
+router.get('/analytics',checkRole,analyticsPage);
  module.exports=router;
