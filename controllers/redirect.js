@@ -11,16 +11,18 @@ const axios = require('axios');
     parser.setUA(userAgent);
     let result = parser.getResult();
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      if (ip.includes(",")) ip = ip.split(",")[0].trim();
+
     const location = geoip.lookup(ip);
+    console.log(location)
    
-  if (ip.includes(",")) ip = ip.split(",")[0].trim();
+
 
   try {
     const response = await axios.get(`http://ip-api.com/json/${ip}`);
     const data = response.data;
 
    console.log({
-      ip: ip,
       country: data.country,
       city: data.city,
       region: data.regionName,
