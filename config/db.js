@@ -8,7 +8,7 @@ const connectDB = async()=>
 })
   .then(()=>{
     console.log("MongoDB connected");
-  })
+  })  
   .catch((err)=>
   {
     console.log("Error",err);

@@ -11,7 +11,7 @@ const { OS } = require('ua-parser-js/enums');
     parser.setUA(userAgent);
     let result = parser.getResult();
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const location = geoip.lookup(ip ||'123.45.67.89');
+    const location = geoip.lookup(ip);
     console.log(ip,location)
     let shortid = req.params.Shortid;
     const url = await URL.findOne({ shortId: shortid });
@@ -21,8 +21,8 @@ const { OS } = require('ua-parser-js/enums');
          {
         await CLICKS.create({
             url:url._id,
-            // country:location["country"]||"other",
-            // city:location["city"]||"other",
+            country:location["country"]||"other",
+            city:location["city"]||"other",
             Browser:result.browser['name']|| "other",
             device: result.device['type']||'other'
           })

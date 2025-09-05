@@ -231,23 +231,9 @@
     </style>
 </head>
 <body>
-      <nav>
-        <div class="nav-container">
-            <div class="logo">🔗 ShortLink Pro</div>
-            <ul class="nav-links">
-                <li><a href="/" class="active">Home</a></li>
-                <li><a href="/dashboard">Dashboard</a></li>
-                <li><a href="/#">Analytics</a></li>
-                <li><a href="/about">About</a></li>
-               <% if(!locals.loginStatus) {%>
-                    <li><a href="/login">Login</a></li>
-                    <%} else{ %>
-                        <li><a href="/logout">logout</a></li>
-                        <%}%>
-            </ul>
-            <!-- <button class="mobile-menu-btn">☰</button> -->
-        </div>
-    </nav>
+      <!-- Nav bar -->
+      <%- include('partials/header',{page:'dashboard'}) %>
+
     <div class="container">
         <h1>🚀 URL Analytics Dashboard</h1>
         
@@ -320,6 +306,10 @@
             </table>
         </div>
     </div>
+
+
+    <!-- footer -->
+        <%- include('partials/footer') %>
 
     <script>
         // Demo Data Structure (This would come from your EJS template in real implementation)
