@@ -4,9 +4,9 @@ const checkRole=require('../middleware/roleAuth')
 const isLogged =require('../middleware/isLogged')
 const {homePage,loginPage,aboutPage,DashBoardPage,analyticsPage}= require('../controllers/pages');
 router.get('/',homePage)
-// router.get('/home',homePage);
 router.get('/login',isLogged,loginPage);
 router.get('/About',aboutPage);
 router.get('/DashBoard',checkRole,DashBoardPage);
-router.get('/analytics',checkRole,analyticsPage);
+router.get('/analytics/:Shortid',checkRole,analyticsPage);
+
  module.exports=router;

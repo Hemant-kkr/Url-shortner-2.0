@@ -1,9 +1,7 @@
 const UAParser = require('ua-parser-js');
 const URL = require('../models/url')
 const CLICKS = require('../models/clicks')
-const fetch = require("node-fetch");
 const geoip = require("geoip-lite");
-const axios = require('axios');
 
  async function  redirectLogic(req, res) {
     let userAgent = req.headers['user-agent'];
@@ -33,4 +31,4 @@ const axios = require('axios');
 
 }
 
-module.exports=redirectLogic;
+module.exports = redirectLogic;
