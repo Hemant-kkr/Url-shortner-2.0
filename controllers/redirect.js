@@ -3,7 +3,7 @@ const URL = require('../models/url')
 const CLICKS = require('../models/clicks')
 const fetch = require("node-fetch");
 const geoip = require("geoip-lite");
-const { OS } = require('ua-parser-js/enums');
+const axios = require('axios');
 
  async function  redirectLogic(req, res) {
     let userAgent = req.headers['user-agent'];
@@ -12,7 +12,23 @@ const { OS } = require('ua-parser-js/enums');
     let result = parser.getResult();
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const location = geoip.lookup(ip);
-    console.log(ip,location)
+   
+  if (ip.includes(",")) ip = ip.split(",")[0].trim();
+
+  try {
+    const response = await axios.get(`http://ip-api.com/json/${ip}`);
+    const data = response.data;
+
+   console.log({
+      ip: ip,
+      country: data.country,
+      city: data.city,
+      region: data.regionName,
+      isp: data.isp
+    });
+  } catch (err) {
+    console.log("Error fetching location",err);
+  }
     let shortid = req.params.Shortid;
     const url = await URL.findOne({ shortId: shortid });
     if (!url) return res.json({ error: 'not found' });
