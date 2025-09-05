@@ -14,23 +14,6 @@ const axios = require('axios');
       if (ip.includes(",")) ip = ip.split(",")[0].trim();
 
     const location = geoip.lookup(ip);
-    console.log(location)
-   
-
-
-  try {
-    const response = await axios.get(`http://ip-api.com/json/${ip}`);
-    const data = response.data;
-
-   console.log({
-      country: data.country,
-      city: data.city,
-      region: data.regionName,
-      isp: data.isp
-    });
-  } catch (err) {
-    console.log("Error fetching location",err);
-  }
     let shortid = req.params.Shortid;
     const url = await URL.findOne({ shortId: shortid });
     if (!url) return res.json({ error: 'not found' });
