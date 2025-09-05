@@ -10,7 +10,7 @@ const axios = require('axios');
     const parser = new UAParser();
     parser.setUA(userAgent);
     let result = parser.getResult();
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
       if (ip.includes(",")) ip = ip.split(",")[0].trim();
 
     const location = geoip.lookup(ip);
