@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Analytics Dashboard</title>
+    <title>URL Analytics - <%= url.shortId %></title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         * {
@@ -11,154 +11,216 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
-      
+
         .container {
-            max-width: 1400px;
-            margin: 60px auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
             backdrop-filter: blur(10px);
         }
-        
-        h1 {
-            text-align: center;
-            color: #333;
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
             margin-bottom: 30px;
-            font-size: 2.5em;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .url-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .url-icon {
+            font-size: 3rem;
+        }
+
+        .url-details h1 {
+            font-size: 2rem;
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
+            margin-bottom: 5px;
         }
-        
-        .stats-overview {
+
+        .url-details .short-url {
+            font-size: 1.1rem;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .url-details .original-url {
+            color: #666;
+            font-size: 0.95rem;
+            word-break: break-all;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
-        
+
         .stat-card {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-            color: white;
-            padding: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
-            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
-            transform: translateY(0);
             transition: transform 0.3s ease;
         }
-        
+
         .stat-card:hover {
             transform: translateY(-5px);
         }
-        
-        .stat-card:nth-child(2) {
-            background: linear-gradient(135deg, #4ecdc4, #44a08d);
-            box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
         }
-        
-        .stat-card:nth-child(3) {
-            background: linear-gradient(135deg, #45b7d1, #96c93d);
-            box-shadow: 0 10px 20px rgba(69, 183, 209, 0.3);
-        }
-        
-        .stat-card:nth-child(4) {
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            box-shadow: 0 10px 20px rgba(240, 147, 251, 0.3);
-        }
-        
+
         .stat-number {
-            font-size: 2.5em;
+            font-size: 2rem;
             font-weight: bold;
-            margin-bottom: 10px;
+            color: #333;
+            margin-bottom: 5px;
         }
-        
+
         .stat-label {
-            font-size: 1.1em;
-            opacity: 0.9;
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        
+
         .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
-        
-        .chart-container {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
-        
+
         .chart-title {
-            font-size: 1.4em;
+            font-size: 1.3rem;
+            font-weight: bold;
             color: #333;
             margin-bottom: 20px;
             text-align: center;
-            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        
-        .chart-wrapper {
+
+        .chart-container {
             position: relative;
-            height: 400px;
+            height: 300px;
+            margin-bottom: 20px;
         }
-        
-        .url-table {
-            background: white;
-            border-radius: 15px;
+
+        .no-data {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .no-data-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .traffic-timeline {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .created-info {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            overflow-x: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+
+        .created-date {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 10px;
         }
-        
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
+
+        .created-time {
+            font-size: 0.9rem;
+            color: #999;
         }
-        
-        th {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            font-weight: 600;
-        }
-        
-        tr:hover {
-            background-color: #f8f9ff;
-        }
-        
-        .url-link {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .url-link:hover {
-            text-decoration: underline;
-        }
-        
+
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
+            .url-info {
+                flex-direction: column;
+                text-align: center;
             }
             
             .charts-grid {
@@ -166,382 +228,299 @@
             }
             
             .chart-container {
-                min-width: auto;
+                height: 250px;
+            }
+            
+            .url-details h1 {
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-      <!-- Nav bar -->
-      <%- include('partials/header',{page:'dashboard'}) %>
-
     <div class="container">
-        <h1>🚀 URL Analytics Dashboard</h1>
+        <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
         
-        <!-- Stats Overview -->
-        <div class="stats-overview">
-            <div class="stat-card">
-                <div class="stat-number" id="totalUrls"><%= UserAllUrls.length %></div>
-                <div class="stat-label">Total URLs</div>
+        <div class="header">
+            <div class="url-info">
+                <div class="url-icon">🔗</div>
+                <div class="url-details">
+                    <h1>URL Analytics</h1>
+                    <div class="short-url">Short URL: <%= url.shortId %></div>
+                    <div class="original-url"><%= url.redirectURL %></div>
+                </div>
             </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number" id="totalClicks"><%= clicks.length %></div>
+                <div class="stat-icon">👆</div>
+                <div class="stat-number"><%= clicks || 0 %></div>
                 <div class="stat-label">Total Clicks</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="totalCountries">0</div>
+                <div class="stat-icon">🌍</div>
+                <div class="stat-number"><%= countryStats ? countryStats.filter(c => c.country).length : 0 %></div>
                 <div class="stat-label">Countries</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="totalDevices">0</div>
-                <div class="stat-label">Device Types</div>
+                <div class="stat-icon">🏙️</div>
+                <div class="stat-number"><%= cityStats ? cityStats.filter(c => c.city).length : 0 %></div>
+                <div class="stat-label">Cities</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📱</div>
+                <div class="stat-number"><%= deviceStats ? deviceStats.filter(d => d.device).length : 0 %></div>
+                <div class="stat-label">Devices</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🌐</div>
+                <div class="stat-number"><%= browserStats ? browserStats.filter(b => b.browser).length : 0 %></div>
+                <div class="stat-label">Browsers</div>
             </div>
         </div>
-        
-        <!-- Charts Grid -->
+
+        <!-- Charts -->
         <div class="charts-grid">
-            <div class="chart-container">
-                <h3 class="chart-title">📊 Clicks per URL</h3>
-                <div class="chart-wrapper">
-                    <canvas id="urlClicksChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="chart-container">
-                <h3 class="chart-title">🌍 Traffic by Country</h3>
-                <div class="chart-wrapper">
+            <!-- Country Distribution -->
+            <div class="chart-card">
+                <h3 class="chart-title">🌍 Country Distribution</h3>
+                <div class="chart-container">
                     <canvas id="countryChart"></canvas>
                 </div>
             </div>
-            
-            <div class="chart-container">
-                <h3 class="chart-title">📱 Device Distribution</h3>
-                <div class="chart-wrapper">
+
+            <!-- City Distribution -->
+            <div class="chart-card">
+                <h3 class="chart-title">🏙️ City Analytics</h3>
+                <div class="chart-container">
+                    <canvas id="cityChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Device Distribution -->
+            <div class="chart-card">
+                <h3 class="chart-title">📱 Device Breakdown</h3>
+                <div class="chart-container">
                     <canvas id="deviceChart"></canvas>
                 </div>
             </div>
-            
-            <div class="chart-container">
-                <h3 class="chart-title">📈 Click Distribution</h3>
-                <div class="chart-wrapper">
-                    <canvas id="clickHistogram"></canvas>
+
+            <!-- Browser Stats -->
+            <div class="chart-card">
+                <h3 class="chart-title">🌐 Browser Usage</h3>
+                <div class="chart-container">
+                    <canvas id="browserChart"></canvas>
                 </div>
             </div>
         </div>
-        
-        <!-- URL Details Table -->
-        <div class="url-table">
-            <h3 class="chart-title">🔗 URL Performance Details</h3>
-            <table id="urlDetailsTable">
-                <thead>
-                    <tr>
-                        <th>URL</th>
-                        <th>Clicks</th>
-                        <th>Top Country</th>
-                        <th>Top Device</th>
-                        <th>Performance</th>
-                    </tr>
-                </thead>
-                <tbody id="urlTableBody">
-                </tbody>
-            </table>
+
+        <!-- URL Info -->
+        <div class="created-info">
+            <div class="created-date">
+                📅 Created: <%= new Date(url.createdAt).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                }) %>
+            </div>
+            <div class="created-time">
+                🕒 <%= new Date(url.createdAt).toLocaleTimeString('en-US') %>
+            </div>
         </div>
     </div>
 
-
-    <!-- footer -->
-        <%- include('partials/footer') %>
-
     <script>
-        // Demo Data Structure (This would come from your EJS template in real implementation)
-        const analyticsData = {
-            urls: [
-                {
-                    url: 'https://example.com/blog/tech-trends',
-                    clicks: 1250,
-                    countries: { 'USA': 450, 'Canada': 200, 'UK': 180, 'Germany': 150, 'France': 120, 'Others': 150 },
-                    devices: { 'Desktop': 650, 'Mobile': 450, 'Tablet': 150 }
-                },
-                {
-                    url: 'https://example.com/products/new-launch',
-                    clicks: 980,
-                    countries: { 'USA': 350, 'India': 250, 'UK': 150, 'Australia': 100, 'Canada': 80, 'Others': 50 },
-                    devices: { 'Mobile': 520, 'Desktop': 350, 'Tablet': 110 }
-                },{
-                    url: 'https://example.com/products/new-launch',
-                    clicks: 980,
-                    countries: { 'USA': 350, 'India': 250, 'UK': 150, 'Australia': 100, 'Canada': 80, 'Others': 50 },
-                    devices: { 'Mobile': 520, 'Desktop': 350, 'Tablet': 110 }
-                },{
-                    url: 'https://example.com/products/new-launch',
-                    clicks: 980,
-                    countries: { 'USA': 350, 'India': 250, 'UK': 150, 'Australia': 100, 'Canada': 80, 'Others': 50 },
-                    devices: { 'Mobile': 520, 'Desktop': 350, 'Tablet': 110 }
-                },{
-                    url: 'https://example.com/products/new-launch',
-                    clicks: 980,
-                    countries: { 'USA': 350, 'India': 250, 'UK': 150, 'Australia': 100, 'Canada': 80, 'Others': 50 },
-                    devices: { 'Mobile': 520, 'Desktop': 350, 'Tablet': 110 }
-                },{
-                    url: 'https://example.com/products/new-launch',
-                    clicks: 980,
-                    countries: { 'USA': 350, 'India': 250, 'UK': 150, 'Australia': 100, 'Canada': 80, 'Others': 50 },
-                    devices: { 'Mobile': 520, 'Desktop': 350, 'Tablet': 110 }
-                },{
-                    url: 'https://example.com/products/new-launch',
-                    clicks: 980,
-                    countries: { 'USA': 350, 'India': 250, 'UK': 150, 'Australia': 100, 'Canada': 80, 'Others': 50 },
-                    devices: { 'Mobile': 520, 'Desktop': 350, 'Tablet': 110 }
-                },{
-                    url: 'https://example.com/products/new-launch',
-                    clicks: 980,
-                    countries: { 'USA': 350, 'India': 250, 'UK': 150, 'Australia': 100, 'Canada': 80, 'Others': 50 },
-                    devices: { 'Mobile': 520, 'Desktop': 350, 'Tablet': 110 }
-                },{
-                    url: 'https://example.com/products/new-launch',
-                    clicks: 980,
-                    countries: { 'USA': 350, 'India': 250, 'UK': 150, 'Australia': 100, 'Canada': 80, 'Others': 50 },
-                    devices: { 'Mobile': 520, 'Desktop': 350, 'Tablet': 110 }
-                },{
-                    url: 'https://example.com/products/new-launch',
-                    clicks: 980,
-                    countries: { 'USA': 350, 'India': 250, 'UK': 150, 'Australia': 100, 'Canada': 80, 'Others': 50 },
-                    devices: { 'Mobile': 520, 'Desktop': 350, 'Tablet': 110 }
-                },{
-                    url: 'https://example.com/products/new-launch',
-                    clicks: 980,
-                    countries: { 'USA': 350, 'India': 250, 'UK': 150, 'Australia': 100, 'Canada': 80, 'Others': 50 },
-                    devices: { 'Mobile': 520, 'Desktop': 350, 'Tablet': 110 }
-                },
-                {
-                    url: 'https://example.com/services/consulting',
-                    clicks: 750,
-                    countries: { 'Germany': 200, 'USA': 180, 'Netherlands': 120, 'Sweden': 100, 'Norway': 80, 'Others': 70 },
-                    devices: { 'Desktop': 450, 'Mobile': 250, 'Tablet': 50 }
-                },
-                {
-                    url: 'https://example.com/about/team',
-                    clicks: 620,
-                    countries: { 'UK': 180, 'USA': 150, 'Canada': 100, 'Australia': 90, 'Ireland': 60, 'Others': 40 },
-                    devices: { 'Desktop': 320, 'Mobile': 220, 'Tablet': 80 }
-                },
-                {
-                    url: 'https://example.com/contact',
-                    clicks: 450,
-                    countries: { 'USA': 120, 'Canada': 90, 'UK': 80, 'Germany': 70, 'France': 50, 'Others': 40 },
-                    devices: { 'Mobile': 230, 'Desktop': 150, 'Tablet': 70 }
-                }
-            ]
-        };
-
-        // Calculate totals for stats
-        const totalClicks = analyticsData.urls.reduce((sum, url) => sum + url.clicks, 0);
-        const allCountries = new Set();
-        const allDevices = new Set();
-        
-        analyticsData.urls.forEach(urlData => {
-            Object.keys(urlData.countries).forEach(country => allCountries.add(country));
-            Object.keys(urlData.devices).forEach(device => allDevices.add(device));
-        });
-
-        // Update stats display
-        // document.getElementById('totalUrls').textContent = analyticsData.urls.length;
-        document.getElementById('totalClicks').textContent = totalClicks.toLocaleString();
-        document.getElementById('totalCountries').textContent = allCountries.size - 1; // -1 for "Others"
-        document.getElementById('totalDevices').textContent = allDevices.size;
-
         // Chart colors
         const colors = [
-            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
-            '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
+            'rgba(102, 126, 234, 0.8)',
+            'rgba(118, 75, 162, 0.8)',
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 205, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)'
         ];
 
-        // 1. URL Clicks Bar Chart
-        const urlClicksCtx = document.getElementById('urlClicksChart').getContext('2d');
-        new Chart(urlClicksCtx, {
-            type: 'bar',
-            data: {
-                labels: analyticsData.urls.map(url => url.url.split('/').pop() || 'home'),
-                datasets: [{
-                    label: 'Clicks',
-                    data: analyticsData.urls.map(url => url.clicks),
-                    backgroundColor: colors.slice(0, analyticsData.urls.length),
-                    borderColor: colors.slice(0, analyticsData.urls.length),
-                    borderWidth: 2,
-                    borderRadius: 8,
-                    borderSkipped: false,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.1)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-
-        // 2. Country Distribution Pie Chart
-        const countryData = {};
-        analyticsData.urls.forEach(urlData => {
-            Object.entries(urlData.countries).forEach(([country, clicks]) => {
-                countryData[country] = (countryData[country] || 0) + clicks;
-            });
-        });
-
-        const countryCtx = document.getElementById('countryChart').getContext('2d');
-        new Chart(countryCtx, {
-            type: 'doughnut',
-            data: {
-                labels: Object.keys(countryData),
-                datasets: [{
-                    data: Object.values(countryData),
-                    backgroundColor: colors,
-                    borderColor: '#fff',
-                    borderWidth: 3
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            usePointStyle: true
-                        }
-                    }
-                }
-            }
-        });
-
-        // 3. Device Distribution Pie Chart
-        const deviceData = {};
-        analyticsData.urls.forEach(urlData => {
-            Object.entries(urlData.devices).forEach(([device, clicks]) => {
-                deviceData[device] = (deviceData[device] || 0) + clicks;
-            });
-        });
-
-        const deviceCtx = document.getElementById('deviceChart').getContext('2d');
-        new Chart(deviceCtx, {
-            type: 'pie',
-            data: {
-                labels: Object.keys(deviceData),
-                datasets: [{
-                    data: Object.values(deviceData),
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                    borderColor: '#fff',
-                    borderWidth: 3
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            usePointStyle: true
-                        }
-                    }
-                }
-            }
-        });
-
-        // 4. Click Distribution Histogram
-        const clickHistogramCtx = document.getElementById('clickHistogram').getContext('2d');
-        const clickRanges = ['0-300', '301-600', '601-900', '901-1200', '1200+'];
-        const clickCounts = [0, 0, 0, 0, 0];
-
-        analyticsData.urls.forEach(urlData => {
-            const clicks = urlData.clicks;
-            if (clicks <= 300) clickCounts[0]++;
-            else if (clicks <= 600) clickCounts[1]++;
-            else if (clicks <= 900) clickCounts[2]++;
-            else if (clicks <= 1200) clickCounts[3]++;
-            else clickCounts[4]++;
-        });
-
-        new Chart(clickHistogramCtx, {
-            type: 'bar',
-            data: {
-                labels: clickRanges,
-                datasets: [{
-                    label: 'Number of URLs',
-                    data: clickCounts,
-                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                    borderColor: 'rgba(102, 126, 234, 1)',
-                    borderWidth: 2,
-                    borderRadius: 8,
-                    borderSkipped: false,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        },
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.1)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-
-        // Populate URL Details Table
-        const tableBody = document.getElementById('urlTableBody');
-        analyticsData.urls.forEach(urlData => {
-            const topCountry = Object.entries(urlData.countries)
-                .filter(([country]) => country !== 'Others')
-                .sort(([,a], [,b]) => b - a)[0];
-            const topDevice = Object.entries(urlData.devices).sort(([,a], [,b]) => b - a)[0];
-            
-            let performance = 'Low';
-            if (urlData.clicks > 800) performance = 'High';
-            else if (urlData.clicks > 500) performance = 'Medium';
-
-            const row = tableBody.insertRow();
-            row.innerHTML = `
-                <td><a href="${urlData.url}" class="url-link" target="_blank">${urlData.url}</a></td>
-                <td>${urlData.clicks.toLocaleString()}</td>
-                <td>${topCountry[0]} (${topCountry[1]})</td>
-                <td>${topDevice[0]} (${topDevice[1]})</td>
-                <td><span style="color: ${performance === 'High' ? '#4CAF50' : performance === 'Medium' ? '#FF9800' : '#F44336'}">${performance}</span></td>
+        // Helper function to create no data message
+        function showNoData(canvasId, message, icon) {
+            const canvas = document.getElementById(canvasId);
+            const container = canvas.parentElement;
+            container.innerHTML = `
+                <div class="no-data">
+                    <div class="no-data-icon">${icon}</div>
+                    <div>${message}</div>
+                </div>
             `;
-        });
+        }
+
+        // Country Chart
+        const countryData = <%- JSON.stringify(countryStats || []) %>;
+        const validCountryData = countryData.filter(item => item.country);
+        
+        if (validCountryData.length > 0) {
+            const countryLabels = validCountryData.map(item => item.country);
+            const countryCounts = validCountryData.map(item => item.count);
+
+            new Chart(document.getElementById('countryChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: countryLabels,
+                    datasets: [{
+                        data: countryCounts,
+                        backgroundColor: colors.slice(0, countryLabels.length),
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            showNoData('countryChart', 'No country data available', '🌍');
+        }
+
+        // City Chart
+        const cityData = <%- JSON.stringify(cityStats || []) %>;
+        const validCityData = cityData.filter(item => item.city);
+        
+        if (validCityData.length > 0) {
+            const cityLabels = validCityData.map(item => item.city);
+            const cityCounts = validCityData.map(item => item.count);
+
+            new Chart(document.getElementById('cityChart'), {
+                type: 'bar',
+                data: {
+                    labels: cityLabels,
+                    datasets: [{
+                        label: 'Clicks',
+                        data: cityCounts,
+                        backgroundColor: colors[1],
+                        borderRadius: 8,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            showNoData('cityChart', 'No city data available', '🏙️');
+        }
+
+        // Device Chart
+        const deviceData = <%- JSON.stringify(deviceStats || []) %>;
+        const validDeviceData = deviceData.filter(item => item.device);
+        
+        if (validDeviceData.length > 0) {
+            const deviceLabels = validDeviceData.map(item => item.device);
+            const deviceCounts = validDeviceData.map(item => item.count);
+
+            new Chart(document.getElementById('deviceChart'), {
+                type: 'pie',
+                data: {
+                    labels: deviceLabels,
+                    datasets: [{
+                        data: deviceCounts,
+                        backgroundColor: colors.slice(0, deviceLabels.length),
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            showNoData('deviceChart', 'No device data available', '📱');
+        }
+
+        // Browser Chart
+        const browserData = <%- JSON.stringify(browserStats || []) %>;
+        const validBrowserData = browserData.filter(item => item.browser);
+        
+        if (validBrowserData.length > 0) {
+            const browserLabels = validBrowserData.map(item => item.browser);
+            const browserCounts = validBrowserData.map(item => item.count);
+
+            new Chart(document.getElementById('browserChart'), {
+                type: 'polarArea',
+                data: {
+                    labels: browserLabels,
+                    datasets: [{
+                        data: browserCounts,
+                        backgroundColor: colors.slice(0, browserLabels.length),
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            showNoData('browserChart', 'No browser data available', '🌐');
+        }
     </script>
 </body>
 </html>

@@ -178,7 +178,7 @@
   <%- include('partials/header',{page:'analytics'}) %>
     <div style="margin-top: 100px;"></div>
     <div class="url-table">
-  <h3 class="chart-title">🔗 URL Performance Details</h3>
+  <h3 class="chart-title">🔗 URL Shortend  Details</h3>
   <table id="urlDetailsTable">
     <thead>
       <tr>
@@ -195,7 +195,7 @@
           <tr>
             <td><%= item.redirectURL %></td>
             <td><%= item.createdAt.toDateString() %></td>
-            <td><a href="/rq/:<%= item.shortId %>" ><%= item.shortId %></a></td>
+            <td><a href="/rq/<%= item.shortId %>" ><%= item.shortId %></a></td>
             <td><%= item.topDevice || "N/A" %></td>
             <td><a href="/analytics/<%= item.shortId %>">view</a></td>
           </tr>
