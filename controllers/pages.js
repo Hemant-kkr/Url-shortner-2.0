@@ -19,7 +19,10 @@ async function aboutPage(req, res) {
 async function DashBoardPage(req, res) {
     const userId = req.session.userId;
     const UserAllUrls = await URL.find({ createdBy: userId });
-
+    // let UserAllUrls; 
+    //     if(userId){
+    //          UserAllUrls = await URL.find({ createdBy: userId });
+    //    } 
     res.render('dashbord', { UserAllUrls, loginStatus: req.session.isLogged });
 }
 
@@ -66,8 +69,20 @@ async function analyticsPage(req, res) {
         { $sort: { count: -1 } }
     ]);
 
-    console.log(countryStats, cityStats, browserStats, deviceStats);
+    // console.log(countryStats, cityStats, browserStats, deviceStats);
 
-    res.render('analytics', { url, UserAllUrls, clicks, countryStats, cityStats, browserStats, deviceStats, loginStatus: req.session.isLogged });
+    // res.render('analytics', { url, UserAllUrls, clicks, countryStats, cityStats, browserStats, deviceStats, loginStatus: req.session.isLogged });
+
+    res.render("analytics", {
+        url,
+        UserAllUrls,
+        clicks,
+        countryStats: countryStats || [],
+        cityStats: cityStats || [],
+        deviceStats: deviceStats || [],
+        browserStats: browserStats || [],
+         loginStatus: req.session.isLogged 
+    });
+
 }
 module.exports = { homePage, loginPage, aboutPage, DashBoardPage, analyticsPage }

@@ -503,6 +503,157 @@
                 margin: 1rem 0;
             }
         }
+
+
+         .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 1400px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .tech-stack {
+            margin: 30px 0;
+        }
+
+        .tech-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tech-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .features {
+            margin: 30px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            text-align: left;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .developer-info {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+
+        .developer-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .developer-text {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .cta {
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .tech-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+        }
     </style>
 </head>
 <body>
@@ -540,15 +691,61 @@
         </div>
 
         <section class="content-section">
-            <div class="glass-card">
-                <h2 class="section-title">Our Story</h2>
-                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text);">
-                    Founded in 2014, we started as a small team with big dreams. Our journey began in a garage with just three passionate individuals who believed technology could change the world. Today, we've grown into a global team of innovators, designers, and problem-solvers, but our core mission remains the same: to build products that matter.
-                </p>
-                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text); margin-top: 1rem;">
-                    We believe in the power of collaboration, the importance of user-centered design, and the potential of technology to solve real-world problems. Every project we undertake is an opportunity to push boundaries and create something extraordinary.
-                </p>
+             <div class="container">
+        <div class="header">
+            <div class="logo">🔗 ShortLink</div>
+            <div class="subtitle">Fast, Reliable URL Shortening Service</div>
+        </div>
+
+        <div class="description">
+            <p>Welcome to my URL shortener project! This application demonstrates modern backend development practices with a focus on performance, scalability, and clean architecture. Built as part of my journey as a backend developer, this project showcases real-world application of web technologies and best practices.</p>
+        </div>
+
+        <div class="tech-stack">
+            <div class="tech-title">🛠️ Technology Stack</div>
+            <div class="tech-grid">
+                <div class="tech-item">Node.js</div>
+                <div class="tech-item">Express.js</div>
+                <div class="tech-item">MongoDB</div>
+                <div class="tech-item">Redis</div>
+                <div class="tech-item">JWT Auth</div>
+                <div class="tech-item">REST API</div>
             </div>
+        </div>
+
+        <div class="features">
+            <div class="tech-title">✨ Key Features</div>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-title">⚡ High Performance</div>
+                    <div class="feature-desc">Optimized database queries and Redis caching for lightning-fast redirects</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-title">🔒 Secure & Reliable</div>
+                    <div class="feature-desc">JWT authentication, input validation, and rate limiting protection</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-title">📊 Analytics Dashboard</div>
+                    <div class="feature-desc">Track clicks, geographic data, and user engagement metrics</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-title">🎯 Custom URLs</div>
+                    <div class="feature-desc">Create branded short links with custom aliases and expiration dates</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="developer-info">
+            <div class="developer-title">👨‍💻 About the Developer</div>
+            <p class="developer-text">
+                I'm a passionate backend developer student focused on building scalable web applications. This project represents my commitment to writing clean, maintainable code and implementing industry best practices. I enjoy solving complex problems and creating efficient solutions that make a real impact.
+            </p>
+        </div>
+
+        <div class="cta">
+            <a href="/" class="btn">Try the URL Shortener</a>
+        </div>
+    </div>
         </section>
 
         <section class="content-section">
@@ -579,43 +776,63 @@
             </div>
         </section>
 
-        <section class="content-section">
-            <div class="glass-card">
-                <h2 class="section-title">Our Journey</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <div class="timeline-year">2014</div>
-                            <p>Company founded with a vision to innovate</p>
-                        </div>
-                        <div class="timeline-dot"></div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <div class="timeline-year">2017</div>
-                            <p>Launched our flagship product, reaching 100k users</p>
-                        </div>
-                        <div class="timeline-dot"></div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <div class="timeline-year">2020</div>
-                            <p>Expanded globally with offices in 5 countries</p>
-                        </div>
-                        <div class="timeline-dot"></div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <div class="timeline-year">2024</div>
-                            <p>Celebrating 10 years of innovation and growth</p>
-                        </div>
-                        <div class="timeline-dot"></div>
-                    </div>
+        <!-- <div class="container">
+        <div class="header">
+            <div class="logo">🔗 ShortLink</div>
+            <div class="subtitle">Fast, Reliable URL Shortening Service</div>
+        </div>
+
+        <div class="description">
+            <p>Welcome to my URL shortener project! This application demonstrates modern backend development practices with a focus on performance, scalability, and clean architecture. Built as part of my journey as a backend developer, this project showcases real-world application of web technologies and best practices.</p>
+        </div>
+
+        <div class="tech-stack">
+            <div class="tech-title">🛠️ Technology Stack</div>
+            <div class="tech-grid">
+                <div class="tech-item">Node.js</div>
+                <div class="tech-item">Express.js</div>
+                <div class="tech-item">MongoDB</div>
+                <div class="tech-item">Redis</div>
+                <div class="tech-item">JWT Auth</div>
+                <div class="tech-item">REST API</div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="tech-title">✨ Key Features</div>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-title">⚡ High Performance</div>
+                    <div class="feature-desc">Optimized database queries and Redis caching for lightning-fast redirects</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-title">🔒 Secure & Reliable</div>
+                    <div class="feature-desc">JWT authentication, input validation, and rate limiting protection</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-title">📊 Analytics Dashboard</div>
+                    <div class="feature-desc">Track clicks, geographic data, and user engagement metrics</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-title">🎯 Custom URLs</div>
+                    <div class="feature-desc">Create branded short links with custom aliases and expiration dates</div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section class="content-section" id="team">
+        <div class="developer-info">
+            <div class="developer-title">👨‍💻 About the Developer</div>
+            <p class="developer-text">
+                I'm a passionate backend developer student focused on building scalable web applications. This project represents my commitment to writing clean, maintainable code and implementing industry best practices. I enjoy solving complex problems and creating efficient solutions that make a real impact.
+            </p>
+        </div>
+
+        <div class="cta">
+            <a href="/" class="btn">Try the URL Shortener</a>
+        </div>
+    </div> -->
+
+        <!-- <section class="content-section" id="team">
             <div class="glass-card">
                 <h2 class="section-title">Meet Our Team</h2>
                 <div class="team-grid">
@@ -641,7 +858,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
 
         <section class="cta-section">
             <h2 style="color: white; font-size: 2.5rem; margin-bottom: 1rem;">Ready to Start Your Journey?</h2>
