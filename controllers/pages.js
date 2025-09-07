@@ -55,12 +55,12 @@ async function analyticsPage(req, res) {
         { $sort: { count: -1 } }
     ]);
 
-    const browserStats = await CLICKS.aggregate([
-        { $match: { url: url._id } },
-        { $group: { _id: "$browser", count: { $sum: 1 } } },
-        { $project: { _id: 0, browser: "$_id", count: 1 } },
-        { $sort: { count: -1 } }
-    ]);
+const browserStats = await Link.aggregate([
+  { $match: { url: url._id } },
+  { $group: { _id: "$Browser", count: { $sum: 1 } } },
+  { $project: { _id: 0, browser: "$_id", count: 1 } },
+  { $sort: { count: -1 } }
+]);
 
     const deviceStats = await CLICKS.aggregate([
         { $match: { url: url._id } },
