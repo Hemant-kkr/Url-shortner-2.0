@@ -68,11 +68,7 @@ async function analyticsPage(req, res) {
         { $project: { _id: 0, device: "$_id", count: 1 } },
         { $sort: { count: -1 } }
     ]);
-
-    // console.log(countryStats, cityStats, browserStats, deviceStats);
-
-    // res.render('analytics', { url, UserAllUrls, clicks, countryStats, cityStats, browserStats, deviceStats, loginStatus: req.session.isLogged });
-
+  console.log( browserStats);
     res.render("analytics", {
         url,
         UserAllUrls,
@@ -82,6 +78,7 @@ async function analyticsPage(req, res) {
         deviceStats: deviceStats || [],
         browserStats: browserStats || [],
          loginStatus: req.session.isLogged 
+         
     });
 
 }
