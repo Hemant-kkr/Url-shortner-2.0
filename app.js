@@ -46,10 +46,11 @@ app.use(session({
 
 //handling the incoming requests via routes 
 app.use('/',pageRoutes);
-
 app.use('/url', urlRouter); // Handling the request for shortening the url
 app.use('/auth',authRoutes);//handling the incoming  authentication requests 
 app.use('/rq',redirectRoute)
+
+
 
 
 

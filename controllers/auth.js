@@ -26,6 +26,18 @@ async function login(req,res){
     req.session.isLogged=true;
     return res.json({status:'sucess'});
 }
+
+async function logout(req,res){
+   req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ message: "Logout failed" });
+        }
+        res.clearCookie("connect.sid"); // Clear session cookie
+        return res.status(200).json({ message: "Logged out successfully" });
+    });
+  
+}
+
 module.exports={
-    signUp, login
+    signUp, login,logout
 }
