@@ -68,7 +68,7 @@ const browserStats = await CLICKS.aggregate([
         { $project: { _id: 0, device: "$_id", count: 1 } },
         { $sort: { count: -1 } }
     ]);
-  console.log( browserStats);
+
     res.render("analytics", {
         url,
         UserAllUrls,
