@@ -6,7 +6,7 @@ const {homePage,loginPage,aboutPage,DashBoardPage,analyticsPage}= require('../co
 router.get('/',homePage)
 router.get('/login',isLogged,loginPage);
 router.get('/About',aboutPage);
-router.get('/DashBoard',checkRole,DashBoardPage);
-router.get('/analytics/:Shortid',checkRole,analyticsPage);
+router.get('/DashBoard',DashBoardPage);
+router.get('/analytics/:Shortid',analyticsPage);
 
  module.exports=router;

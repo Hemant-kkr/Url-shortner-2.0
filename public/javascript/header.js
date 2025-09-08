@@ -1,47 +1,48 @@
-
-// Mobile menu toggle
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const navLinks = document.getElementById('navLinks');
+const overlay = document.getElementById('overlay');
 
+// Toggle mobile menu
 mobileMenuBtn.addEventListener('click', () => {
   navLinks.classList.toggle('active');
+  overlay.classList.toggle('active');
   mobileMenuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
 });
 
-// Close menu when clicking on overlay
-navLinks.addEventListener('click', (e) => {
-  if (e.target === navLinks) {
-    navLinks.classList.remove('active');
-    mobileMenuBtn.textContent = '☰';
-  }
+// Close when clicking overlay
+overlay.addEventListener('click', () => {
+  navLinks.classList.remove('active');
+  overlay.classList.remove('active');
+  mobileMenuBtn.textContent = '☰';
 });
 
-// Close menu when clicking on a link (mobile)
+// Close when clicking a link (mobile only)
 document.querySelectorAll('.nav-links a').forEach(link => {
   link.addEventListener('click', () => {
     if (window.innerWidth <= 768) {
       navLinks.classList.remove('active');
+      overlay.classList.remove('active');
       mobileMenuBtn.textContent = '☰';
     }
   });
 });
 
-// Handle window resize
+// Reset menu on resize
 window.addEventListener('resize', () => {
   if (window.innerWidth > 768) {
     navLinks.classList.remove('active');
+    overlay.classList.remove('active');
     mobileMenuBtn.textContent = '☰';
   }
 });
 
-// Your existing logout function
+// Logout function
 async function logout() {
   try {
     const res = await fetch('/auth/logout', {
       method: 'POST',
       credentials: 'include'
     });
-    const data = await res.json();
     if (res.ok) {
       window.location.href = '/login';
     }

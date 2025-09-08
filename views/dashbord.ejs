@@ -171,21 +171,86 @@
         min-width: auto;
       }
     }
+.delete-btn {
+  background: linear-gradient(135deg, #ff4b5c, #d63447);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background: linear-gradient(135deg, #d63447, #ff4b5c);
+  transform: scale(1.05);
+}
+
+  /* Responsive table */
+@media (max-width: 768px) {
+  table, thead, tbody, th, tr {
+    display: block;
+    width: 100%;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fafafa;
+    padding: 10px;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  td:last-child {
+    border-bottom: none;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #667eea;
+    flex: 1;
+    padding-right: 10px;
+    pointer-events: none;   /* 🔥 Fix: no blocking clicks */
+  }
+
+  td a,
+  td button {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;  /* ensure clickable */
+  }
+}
+
   </style>
 </head>
 
 <body>
   <%- include('partials/header',{page:'analytics'}) %>
     <div style="margin-top: 100px;"></div>
-    <div class="url-table">
-  <h3 class="chart-title">🔗 URL Shortend  Details</h3>
+  <div class="url-table">
+  <h3 class="chart-title">🔗 URL Shortened Details</h3>
   <table id="urlDetailsTable">
     <thead>
       <tr>
         <th>URL</th>
         <th>Date</th>
         <th>Shorten Url</th>
-        <th>Top Device</th>
+        <th>Delete</th>
         <th>Analytics</th>
       </tr>
     </thead>
@@ -193,11 +258,19 @@
       <% if (UserAllUrls && UserAllUrls.length > 0) { %>
         <% UserAllUrls.forEach((item) => { %>
           <tr>
-            <td><%= item.redirectURL %></td>
-            <td><%= item.createdAt.toDateString() %></td>
-            <td><a href="/rq/<%= item.shortId %>" ><%= item.shortId %></a></td>
-            <td><%= item.topDevice || "N/A" %></td>
-            <td><a href="/analytics/<%= item.shortId %>">view</a></td>
+            <td data-label="URL"><%= item.redirectURL %></td>
+            <td data-label="Date"><%= item.createdAt.toDateString() %></td>
+            <td data-label="Shorten Url">
+              <a href="/rq/<%= item.shortId %>" class="url-link"><%= item.shortId %></a>
+            </td>
+            <td data-label="Delete">
+              <form action="/delete/<%= item.shortId %>" method="POST" style="display:inline;">
+                <button type="submit" class="delete-btn">🗑 Delete</button>
+              </form>
+            </td>
+            <td data-label="Analytics">
+              <a href="/analytics/<%= item.shortId %>" class="url-link">View</a>
+            </td>
           </tr>
         <% }) %>
       <% } else { %>
@@ -208,6 +281,7 @@
     </tbody>
   </table>
 </div>
+
 
 
     <!-- footer -->
