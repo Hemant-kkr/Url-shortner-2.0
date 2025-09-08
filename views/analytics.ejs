@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Analytics - <%= url.shortId %></title>
+    <title>URL Analytics - <%= url.shortId %>
+    </title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         * {
@@ -222,32 +224,36 @@
                 flex-direction: column;
                 text-align: center;
             }
-            
+
             .charts-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .chart-container {
                 height: 250px;
             }
-            
+
             .url-details h1 {
                 font-size: 1.5rem;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
-        
+
         <div class="header">
             <div class="url-info">
                 <div class="url-icon">🔗</div>
                 <div class="url-details">
                     <h1>URL Analytics</h1>
-                    <div class="short-url">Short URL: <%= url.shortId %></div>
-                    <div class="original-url"><%= url.redirectURL %></div>
+                    <div class="short-url">Short URL: <%= url.shortId %>
+                    </div>
+                    <div class="original-url">
+                        <%= url.redirectURL %>
+                    </div>
                 </div>
             </div>
         </div>
@@ -256,33 +262,44 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">👆</div>
-                <div class="stat-number"><%= clicks.length  %></div>
+                <div class="stat-number">
+                    <%= clicks.length %>
+                </div>
                 <div class="stat-label">Total Clicks</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">🌍</div>
-                <div class="stat-number"><%= countryStats ? countryStats.filter(c => c.country).length : 0 %></div>
+                <div class="stat-number">
+                    <%= countryStats ? countryStats.filter(c=> c.country).length : 0 %>
+                </div>
                 <div class="stat-label">Countries</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">🏙️</div>
-                <div class="stat-number"><%= cityStats ? cityStats.filter(c => c.city).length : 0 %></div>
+                <div class="stat-number">
+                    <%= cityStats ? cityStats.filter(c=> c.city).length : 0 %>
+                </div>
                 <div class="stat-label">Cities</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">📱</div>
-                <div class="stat-number"><%= deviceStats ? deviceStats.filter(d => d.device).length : 0 %></div>
+                <div class="stat-number">
+                    <%= deviceStats ? deviceStats.filter(d=> d.device).length : 0 %>
+                </div>
                 <div class="stat-label">Devices</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">🌐</div>
-                <div class="stat-number"><%= browserStats ? browserStats.filter(b => b.browser).length : 0 %></div>
+                <div class="stat-number">
+                    <%= browserStats ? browserStats.filter(b=> b.browser).length : 0 %>
+                </div>
                 <div class="stat-label">Browsers</div>
             </div>
         </div>
 
         <!-- Charts -->
         <div class="charts-grid">
+            <input type="hidden" id="countryStats" data-analytics='<%- JSON.stringify(countryStats) %>' />
             <!-- Country Distribution -->
             <div class="chart-card">
                 <h3 class="chart-title">🌍 Country Distribution</h3>
@@ -293,6 +310,7 @@
 
             <!-- City Distribution -->
             <div class="chart-card">
+                 <input type="hidden" id="cityStats" data-analytics='<%- JSON.stringify(cityStats) %>' />
                 <h3 class="chart-title">🏙️ City Analytics</h3>
                 <div class="chart-container">
                     <canvas id="cityChart"></canvas>
@@ -301,6 +319,7 @@
 
             <!-- Device Distribution -->
             <div class="chart-card">
+                 <input type="hidden" id="deviceStats" data-analytics='<%- JSON.stringify(deviceStats) %>' />
                 <h3 class="chart-title">📱 Device Breakdown</h3>
                 <div class="chart-container">
                     <canvas id="deviceChart"></canvas>
@@ -309,6 +328,7 @@
 
             <!-- Browser Stats -->
             <div class="chart-card">
+                <input type="hidden" id="browserStats" data-analytics='<%- JSON.stringify(browserStats) %>' />
                 <h3 class="chart-title">🌐 Browser Usage</h3>
                 <div class="chart-container">
                     <canvas id="browserChart"></canvas>
@@ -319,11 +339,8 @@
         <!-- URL Info -->
         <div class="created-info">
             <div class="created-date">
-                📅 Created: <%= new Date(url.createdAt).toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                }) %>
+                📅 Created: <%= new Date(url.createdAt).toLocaleDateString('en-US', { year: 'numeric' , month: 'long' ,
+                    day: 'numeric' }) %>
             </div>
             <div class="created-time">
                 🕒 <%= new Date(url.createdAt).toLocaleTimeString('en-US') %>
@@ -332,7 +349,8 @@
     </div>
 
     <script src="/javascript/analytics.js">
-       
+
     </script>
 </body>
+
 </html>

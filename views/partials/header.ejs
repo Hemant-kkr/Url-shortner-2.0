@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Responsive Header</title>
   <link rel="stylesheet" href="/css/header.css">
+
 </head>
 
 <body>
@@ -13,7 +14,7 @@
   <nav>
     <div class="nav-container">
       <div class="logo">🔗 ShortLink Pro</div>
-      <ul class="nav-links">
+      <ul class="nav-links" id="navLinks">
         <li><a href="/" class="<%= page === 'home' ? 'active' : '' %>">Home</a></li>
         <li><a href="/dashboard" class="<%= page === 'dashboard' ? 'active' : '' %>">Dashboard</a></li>
         <li><a href="/about" class="<%= page === 'about' ? 'active' : '' %>">About</a></li>
@@ -25,12 +26,10 @@
               <% } %>
 
       </ul>
-
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
     </div>
   </nav>
-  <script src="/javascript/header.js">
-   
-  </script>
+    <script src="/javascript/header.js">  </script>
 </body>
 
 </html>
