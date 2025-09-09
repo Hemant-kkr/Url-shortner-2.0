@@ -148,6 +148,38 @@
       background-color: #f8f9ff;
     }
 
+
+
+td[data-label="URL"] {
+  max-width: 200px;   /* adjust as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+td[data-label="URL"] {
+  position: relative;
+}
+
+td[data-label="URL"]::after {
+  content: attr(data-full-url);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 5px 8px;
+  white-space: normal;
+  display: none;
+  z-index: 10;
+}
+
+td[data-label="URL"]:hover::after {
+  display: block;
+}
+
+
     .url-link {
       color: #667eea;
       text-decoration: none;
@@ -258,7 +290,8 @@
       <% if (UserAllUrls && UserAllUrls.length > 0) { %>
         <% UserAllUrls.forEach((item) => { %>
           <tr>
-            <td data-label="URL"><%= item.redirectURL %></td>
+           <td data-label="URL" data-full-url="<%= item.redirectURL %>"><%= item.redirectURL %></td>
+
             <td data-label="Date"><%= item.createdAt.toDateString() %></td>
             <td data-label="Shorten Url">
               <a href="/rq/<%= item.shortId %>" class="url-link"><%= item.shortId %></a>
