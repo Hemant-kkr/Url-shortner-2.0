@@ -1,7 +1,7 @@
-const mongoose = require('mongoose')
-const URL = require('../models/url')
-const CLICKS = require('../models/clicks')
-const USER = require('../models/user');
+    const mongoose = require('mongoose')
+    const URL = require('../models/url')
+    const CLICKS = require('../models/clicks')
+    const USER = require('../models/user');
 
 async function homePage(req, res) {
     const totalUrls = await URL.countDocuments({});
