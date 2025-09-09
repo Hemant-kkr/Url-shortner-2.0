@@ -32,7 +32,7 @@ async function deleteUrl(req, res) {
       return res.status(404).json({ message: "Failed to delete URL" });
     }
 
-    return res.json({ deleted: ShortId, status: "Deleted successfully" });
+    return  res.redirect("/dashboard");
 
   } catch (error) {
     console.error("Error deleting URL:", error);
