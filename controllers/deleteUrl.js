@@ -21,8 +21,6 @@ async function deleteUrl(req, res) {
       }
    }
 
-
-   return res.json({ deleted: ShortId, hello: "hello" })
 }
 
 module.exports = deleteUrl;
